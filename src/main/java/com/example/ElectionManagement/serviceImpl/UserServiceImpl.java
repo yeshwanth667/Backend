@@ -75,15 +75,14 @@ public class UserServiceImpl implements UserService {
 			user.setEmailVerificationStatus(false);
 			user.setUserId(utils.generateUserId(15));
 			user.setEmailVerificationToken(utils.generateRandomString(15));
-
-			User save = userRepository.save(user);
-
 			UserDto newUserDto = new UserDto();
 
-			LocalDate dob = save.getDateOfBirth();
+			LocalDate dob = userDto.getDateOfBirth();
 
 			int age = Period.between(dob, LocalDate.now()).getYears();
-			newUserDto.setAge(age);
+			user.setAge(age);
+
+			User save = userRepository.save(user);
 
 			BeanUtils.copyProperties(save, newUserDto);
 
@@ -108,9 +107,10 @@ public class UserServiceImpl implements UserService {
 			User byMobileNumber = userRepository.findByMobileNumber(mobileNumber);
 
 			UserDto userDto = new UserDto();
-			LocalDate dob = byMobileNumber.getDateOfBirth();
+			int age = byMobileNumber.getAge();
+			// LocalDate dob = byMobileNumber.getDateOfBirth();
 
-			int age = Period.between(dob, LocalDate.now()).getYears();
+			// int age = Period.between(dob, LocalDate.now()).getYears();
 			userDto.setAge(age);
 
 			BeanUtils.copyProperties(byMobileNumber, userDto);
@@ -137,9 +137,11 @@ public class UserServiceImpl implements UserService {
 
 			UserDto userDto = new UserDto();
 
-			LocalDate dob = byMobileNumber.getDateOfBirth();
+			int age = byMobileNumber.getAge();
 
-			int age = Period.between(dob, LocalDate.now()).getYears();
+			// LocalDate dob = byMobileNumber.getDateOfBirth();
+
+			// int age = Period.between(dob, LocalDate.now()).getYears();
 			userDto.setAge(age);
 
 			BeanUtils.copyProperties(byMobileNumber, userDto);
@@ -178,10 +180,11 @@ public class UserServiceImpl implements UserService {
 				for (User user : all) {
 
 					UserDto userDtoNew = new UserDto();
+					int age = user.getAge();
 
-					LocalDate dob = user.getDateOfBirth();
+					// LocalDate dob = user.getDateOfBirth();
 
-					int age = Period.between(dob, LocalDate.now()).getYears();
+					// int age = Period.between(dob, LocalDate.now()).getYears();
 					userDtoNew.setAge(age);
 
 					BeanUtils.copyProperties(user, userDtoNew);
@@ -223,13 +226,16 @@ public class UserServiceImpl implements UserService {
 			user.setId(userDto.getId());
 			user.setDateOfBirth(userDto.getDateOfBirth());
 			user.setMobileNumber(userDto.getMobileNumber());
+			LocalDate dateOfBirth = userDto.getDateOfBirth();
+			int years = Period.between(dateOfBirth, LocalDate.now()).getYears();
+			user.setAge(years);
 
 			User save = userRepository.save(user);
 
-			LocalDate dob = save.getDateOfBirth();
+			// LocalDate dob = save.getDateOfBirth();
 
-			int age = Period.between(dob, LocalDate.now()).getYears();
-			userDtoNew.setAge(age);
+			// int age = Period.between(dob, LocalDate.now()).getYears();
+			// userDtoNew.setAge(age);
 
 			BeanUtils.copyProperties(save, userDtoNew);
 
@@ -254,9 +260,10 @@ public class UserServiceImpl implements UserService {
 			User byEmail = userRepository.findByEmail(userDto.getEmail());
 
 			UserDto userDtoNew = new UserDto();
-			LocalDate dob = byEmail.getDateOfBirth();
+			int age = byEmail.getAge();
+			// LocalDate dob = byEmail.getDateOfBirth();
 
-			int age = Period.between(dob, LocalDate.now()).getYears();
+			// int age = Period.between(dob, LocalDate.now()).getYears();
 			userDtoNew.setAge(age);
 
 			BeanUtils.copyProperties(byEmail, userDtoNew);
@@ -288,10 +295,10 @@ public class UserServiceImpl implements UserService {
 			User save = userRepository.save(userByUserId);
 
 			UserDto userDtoNew = new UserDto();
-			LocalDate dob = save.getDateOfBirth();
+			// LocalDate dob = save.getDateOfBirth();
 
-			int age = Period.between(dob, LocalDate.now()).getYears();
-			userDtoNew.setAge(age);
+			// int age = Period.between(dob, LocalDate.now()).getYears();
+			// userDtoNew.setAge(age);
 
 			BeanUtils.copyProperties(save, userDtoNew);
 
@@ -327,10 +334,10 @@ public class UserServiceImpl implements UserService {
 			for (User newUser : byGenderIgnoreCase) {
 				UserDto userDtoNew = new UserDto();
 
-				LocalDate dob = newUser.getDateOfBirth();
+				int age2 = newUser.getAge();
 
-				int age = Period.between(dob, LocalDate.now()).getYears();
-				userDtoNew.setAge(age);
+				// int age = Period.between(dob, LocalDate.now()).getYears();
+				userDtoNew.setAge(age2);
 
 				BeanUtils.copyProperties(newUser, userDtoNew);
 				userDtoList.add(userDtoNew);
@@ -368,10 +375,10 @@ public class UserServiceImpl implements UserService {
 			for (User userList : byEmailVerificationStatus) {
 
 				UserDto userDto = new UserDto();
-				LocalDate dob = userList.getDateOfBirth();
+				int age2 = userList.getAge();
 
-				int age = Period.between(dob, LocalDate.now()).getYears();
-				userDto.setAge(age);
+				// int age = Period.between(dob, LocalDate.now()).getYears();
+				userDto.setAge(age2);
 
 				BeanUtils.copyProperties(userList, userDto);
 
@@ -401,19 +408,19 @@ public class UserServiceImpl implements UserService {
 
 			UserDto userDto = new UserDto();
 
-			LocalDate dob = byMobileNumber.getDateOfBirth();
+			int age2 = byMobileNumber.getAge();
 
-			int age = Period.between(dob, LocalDate.now()).getYears();
-			userDto.setAge(age);
+			// int age = Period.between(dob, LocalDate.now()).getYears();
+			userDto.setAge(age2);
 			BeanUtils.copyProperties(byMobileNumber, userDto);
 
-			if (age >= 18) {
+			if (age2 >= 18) {
 
 				return new Response("You are Eligible...", userDto, 200, "OK");
 
 			} else {
 
-				return new Response("Users Age is Not Eligible to Apply For Voter Card..", age, 400, "BAD_REQUEST");
+				return new Response("Users Age is Not Eligible to Apply For Voter Card..", age2, 400, "BAD_REQUEST");
 
 			}
 

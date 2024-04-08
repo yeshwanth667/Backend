@@ -27,6 +27,9 @@ public class User {
 	@Column(name = "userMobileNumber", nullable = false, unique = true)
 	private String mobileNumber;
 
+	@Column(name = "age", nullable = false)
+	private int age;
+
 	public String getMobileNumber() {
 		return mobileNumber;
 	}
@@ -162,6 +165,14 @@ public class User {
 
 	public void setOtp(String otp) {
 		this.otp = otp;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 }
